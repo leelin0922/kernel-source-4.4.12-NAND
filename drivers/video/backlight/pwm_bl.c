@@ -24,7 +24,7 @@
 #include <linux/regulator/consumer.h>
 #include <linux/slab.h>
 
-//#define COMMANDLINE_FINDER
+#define COMMANDLINE_FINDER
 #ifdef COMMANDLINE_FINDER
 extern char *saved_command_line;
 #define PWM_BACKLIGHT_GPIO_ACTIVE_LOW	1
@@ -370,11 +370,27 @@ static int pwm_backlight_probe(struct platform_device *pdev)
 	 * set the period from platform data if it has not already been set
 	 * via the PWM lookup table.
 	 */
+#ifdef COMMANDLINE_FINDER
+	pb->period = data->pwm_period_ns;
+	if(pb->period<6000000 && pb->period>50000)
+	{
+		pwm_set_period(pb->pwm, data->pwm_period_ns);
+	}
+	else
+	{
+		pb->period = pwm_get_period(pb->pwm);
+		if (!pb->period && (data->pwm_period_ns > 0)) {
+			pb->period = data->pwm_period_ns;
+			pwm_set_period(pb->pwm, data->pwm_period_ns);
+		}
+	}
+#else
 	pb->period = pwm_get_period(pb->pwm);
 	if (!pb->period && (data->pwm_period_ns > 0)) {
 		pb->period = data->pwm_period_ns;
 		pwm_set_period(pb->pwm, data->pwm_period_ns);
 	}
+#endif
 
 	pb->lth_brightness = data->lth_brightness * (pb->period / pb->scale);
 
