@@ -5,7 +5,7 @@ export ARCH=arm
 #make distclean
 make am335x_sbc_7109_455_defconfig ARCH=arm
 #make -j2 zImage modules am335x-sbc_7109_455.dtb
-make -j2 zImage dtbs
+make -j2 zImage am335x-sbc_7109_455.dtb
 
 cp ./arch/arm/boot/zImage /media/sf_share/7109/.
 cp ./arch/arm/boot/dts/am335x-sbc_7109_455.dtb /media/sf_share/7109/.
