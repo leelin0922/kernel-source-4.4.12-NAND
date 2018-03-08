@@ -763,7 +763,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&mmc1_pins>;
 	cd-gpios = <&gpio2 1 GPIO_ACTIVE_LOW>;
-	//max-frequency = <25000000>; //leelin
+	max-frequency = <25000000>; //leelin
 	disable-wp;
 	//wp-gpios = <&gpio3 8 GPIO_ACTIVE_LOW>;
 };
